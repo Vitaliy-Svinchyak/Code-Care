@@ -9,15 +9,22 @@
         <th>
             Hash
         </th>
+        <th>
+            &nbsp;
+        </th>
         </thead>
         <tbody>
         <tr ng-repeat="(hashName, hashValue) in chosenWord">
             <td> {{ hashName }}</td>
             <td data-hash="{{hashValue}}"> {{hashValue}}</td>
-            <td>
+            <td ng-if="needsFull(hashValue)">
                 <md-button class="md-raised custom-button" ng-click="full(hashValue)" type="button">full
                 </md-button>
             </td>
+            <td ng-if="!needsFull(hashValue)">
+                &nbsp;
+            </td>
+
         </tr>
         </tbody>
 

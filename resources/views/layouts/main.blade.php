@@ -25,6 +25,8 @@
 <script src="https://cdn.gitcdn.link/cdn/angular/bower-material/v1.1.1/angular-material.js"></script>
 <script src="{{ asset('/js/app.js') }}"></script>
 <script src="{{ asset('/controllers/main.js') }}"></script>
+<script src="{{ asset('/models/Word.js') }}"></script>
+<script src="{{ asset('/models/Hash.js') }}"></script>
 {{--<script src="{{ asset('/models/HashedWord.js') }}"></script>--}}
 </body>
 </html>

@@ -24,6 +24,10 @@ class Vocabulary extends Model
 
     public $timestamps = false;
 
+    /**
+     * Returns query for first 25 user words
+     * @return QueryBuilder
+     */
     public static function ofCurrentUser()
     {
         $wordIds = HashedWord::ofCurrentUser()

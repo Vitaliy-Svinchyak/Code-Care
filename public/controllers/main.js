@@ -9,8 +9,11 @@ angular.module('app').config(['$routeProvider', function ($routeProvider) {
             redirectTo: '/'
         });
 }])
+    //Controller for everything with hashes
     .controller('IndexController', ['$scope', '$http', '$mdDialog', '$mdBottomSheet',
-        function ($scope, $http, $mdDialog, $mdBottomSheet) {
+        'WordModel', 'HashModel',
+        function ($scope, $http, $mdDialog, $mdBottomSheet,
+                  WordModel, HashModel) {
             $scope.word = '';
             $scope.words = [];
             $scope.functions = [];
@@ -18,59 +21,70 @@ angular.module('app').config(['$routeProvider', function ($routeProvider) {
             $scope.selectedWords = [];
             $scope.showSaved = false;
 
+            //First load of words and hash algorithms
             $http.get('/getInfo')
                 .then(function (r) {
                     $scope.words = r.data.words;
                     $scope.functions = r.data.functions;
                 });
 
+            /**
+             * Checks if given algorithm is checked
+             * @param item
+             * @returns {boolean}
+             */
             $scope.existsFunction = function (item) {
                 return $scope.selectedFunctions.indexOf(item) > -1;
             };
 
+            /**
+             * Checks if given word is checked
+             * @param item
+             * @returns {boolean}
+             */
             $scope.existsWord = function (item) {
                 return $scope.selectedWords.indexOf(item) > -1;
             };
 
+            /**
+             * Checks/Uncheks given word or function
+             * @param item
+             * @param array
+             */
             $scope.toggle = function (item, array) {
-                var idx = array.indexOf(item);
-                if (idx > -1) {
-                    array.splice(idx, 1);
+                var index = array.indexOf(item);
+                if (index > -1) {
+                    array.splice(index, 1);
                 }
                 else {
                     array.push(item);
                 }
             };
 
-            $scope.addItem = function () {
-                $http.get('/getInfo')
-                    .then(function (r) {
-                        $scope.words = r.data.words;
-                        $scope.functions = r.data.functions;
-                    });
-            };
-
             $scope.addWord = function () {
-                $http.post('/word', {word: $scope.word})
-                    .then(function (r) {
-                        $scope.words.unshift(r.data.word);
-                        $scope.selectedWords.push(r.data.word.id);
-                        $scope.word = '';
-                    });
+                WordModel.create($scope.word).then(function (r) {
+                    $scope.words.unshift(r.data.word);
+                    $scope.selectedWords.push(r.data.word.id);
+                    $scope.word = '';
+                });
+
             };
 
             $scope.searchWord = function () {
-                $http.post('/word/find', {word: $scope.word})
-                    .then(function (r) {
-                        $scope.words = r.data.words;
-                        $scope.selectedWords = [];
-                    });
+                WordModel.search($scope.word).then(function (r) {
+                    $scope.words.unshift(r.data.word);
+                    $scope.selectedWords.push(r.data.word.id);
+                    $scope.word = '';
+                });
             };
 
+            /**
+             * Sends a request for creating hashes and displays modal window with result
+             * @param Event ev
+             */
             $scope.hashWords = function (ev) {
-                $http.post('/hash', {words: $scope.selectedWords, algorithms: $scope.selectedFunctions})
+                HashModel.create($scope.selectedWords, $scope.selectedFunctions)
                     .then(function (r) {
-                        console.log(r.data.words)
                         $mdDialog.show({
                             controller: 'DialogController',
                             templateUrl: '/views/site/HashedDialog.html',
@@ -79,18 +93,14 @@ angular.module('app').config(['$routeProvider', function ($routeProvider) {
                             clickOutsideToClose: true,
                             locals: {
                                 words: r.data.words
-                            },
+                            }
                         });
                     });
             };
 
-            $scope.showListBottomSheet = function () {
-                $mdBottomSheet.show({
-                    templateUrl: 'bottom-sheet-list-template.html',
-                    controller: 'ListBottomSheetCtrl'
-                });
-            };
-
+            /**
+             * Opens saved words
+             */
             $scope.getSaved = function () {
                 $scope.showSaved = true;
                 $mdBottomSheet.show({
@@ -99,11 +109,16 @@ angular.module('app').config(['$routeProvider', function ($routeProvider) {
                 })
             };
 
+            /**
+             * Checks if user selects at least 1 word &7 1 algorithm
+             * @returns {Number}
+             */
             $scope.sthSelected = function () {
                 return $scope.selectedFunctions.length && $scope.selectedWords.length;
             };
 
         }])
+    //Controller for modal window with result of new hashing
     .controller('DialogController', ['$scope', '$mdDialog', 'words',
         function ($scope, $mdDialog, words) {
             $scope.words = words;
@@ -120,26 +135,45 @@ angular.module('app').config(['$routeProvider', function ($routeProvider) {
                 $mdDialog.hide();
             };
         }])
-    .controller('SavedController', ['$scope', '$http',
-        function ($scope, $http) {
+    //Controller for saved words
+    .controller('SavedController', ['$scope', 'HashModel',
+        function ($scope, HashModel) {
             $scope.words = [];
             $scope.chosenWord = {};
-            $http.get('/hash')
+            //Request for getting all saved words
+            HashModel.get()
                 .then(function (r) {
                     $scope.words = r.data.words;
                 });
 
+            /**
+             * Selects a new word to view his hashes
+             * @param word
+             */
             $scope.selectWord = function (word) {
                 $scope.chosenWord = $scope.words[word];
             };
 
+            /**
+             * Detects if word needs "FULL" button
+             * @param hash
+             * @returns {boolean}
+             */
+            $scope.needsFull = function(hash){
+                return hash.length > 24;
+            }
+
+            /**
+             * Creates a text input to get user a possibility to copy a long hash
+             * @param hash
+             */
             $scope.full = function (hash) {
-                var issetInput = document.querySelector(`[data-hash ="${hash}"] input`);
-                if(issetInput){
+                var issetInput = document.querySelector(`[data-hash="${hash}"] input`);
+                if (issetInput) {
                     issetInput.value = hash;
                 }
-                else{
-                    var elem = document.querySelector(`[data-hash ="${hash}"]`);
+                else {
+                    var elem = document.querySelector(`[data-hash="${hash}"]`);
                     var input = document.createElement('input');
                     input.type = 'text';
                     input.value = hash;

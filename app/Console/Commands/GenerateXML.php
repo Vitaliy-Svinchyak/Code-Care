@@ -41,6 +41,7 @@ class GenerateXML extends Command
      */
     public function handle()
     {
+        //We will start from users
         $users = User::with([
             'hashes.word'
         ])
@@ -55,6 +56,7 @@ class GenerateXML extends Command
                 unset($hashedWord['word_id']);
                 unset($hashedWord['user_id']);
                 $hashedWord['word'] = $hashedWord['word']['word'];
+                //Finding similar words
                 $similarWords = Vocabulary::where('word', 'LIKE', "%{$hashedWord['word']}%")
                     ->where('word', '!=', $hashedWord['word'])
                     ->select('word')
@@ -65,6 +67,7 @@ class GenerateXML extends Command
                 }
             }
         }
+        //Creating file
         $time = date('Y-m-d_H_i_s');
         $filename = 'vocabulary_' . $time . '.xml';
         $xml = Formatter::make($users, Formatter::ARR)->toXml();

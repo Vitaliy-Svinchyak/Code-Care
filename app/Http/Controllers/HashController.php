@@ -43,6 +43,7 @@ class HashController extends Controller
                 //Checking if we have such word
                 $wordFromDb = Vocabulary::find($word);
                 if ($wordFromDb) {
+                    //If we have such hashed word - we don't need to encrypt it again(I think)
                     $issetHash = HashedWord::where([
                         'word_id' => $word,
                         'algorithm' => $algorithm,
@@ -50,6 +51,7 @@ class HashController extends Controller
                     if ($issetHash) {
                         $newHash = $issetHash;
                     } else {
+                        //Creating new hash
                         $hashedWord = hash($algorithm, $wordFromDb->word);
                         $newHash = new HashedWord([
                             'word_id' => $word,

@@ -58,6 +58,7 @@ body {
 
 .dataTable th {
     text-align: center;
+    padding: 5px;
 }
 
 .dataTable.saved-word-hashes td {
@@ -140,7 +141,7 @@ md-list {
 .saved-word-hashes {
     width: 40%;
     float: right;
-    max-width: 40%;
+    max-width: 400px;
 }
 
 input.copy-input {

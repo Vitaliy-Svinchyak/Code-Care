@@ -14,7 +14,7 @@ class WordController extends Controller
 {
 
     /**
-     * Finds words from db
+     * Finds words from db by name
      * @param Request $request
      * @return array
      */
