@@ -7,6 +7,7 @@
  */
 namespace App\Http\Controllers;
 
+use App\Lib\WordSaver;
 use App\Models\Vocabulary;
 use Illuminate\Http\Request;
 
@@ -32,12 +33,7 @@ class WordController extends Controller
     public function store(Request $request)
     {
         $word = $request->input('word');
-        $issetWord = Vocabulary::where('word', $word)->first();
-        if ($issetWord) {
-            return $issetWord;
-        }
-        $newWord = new Vocabulary(['word' => $word]);
-        $newWord->save();
+        $newWord = WordSaver::saveOne($word);
 
         return ['word' => $newWord];
     }

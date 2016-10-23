@@ -7,9 +7,9 @@
  */
 namespace App\Http\Controllers;
 
-use App\Models\Vocabulary;
 use App\Models\HashedWord;
 use Illuminate\Http\Request;
+use App\Lib\HashInstrument;
 
 class HashController extends Controller
 {
@@ -35,35 +35,10 @@ class HashController extends Controller
      */
     public function store(Request $request)
     {
-        $newHashes = [];
         $words = $request->input('words');
-        $hashes = $request->input('algorithms');
-        foreach ($hashes as $algorithm) {
-            foreach ($words as $word) {
-                //Checking if we have such word
-                $wordFromDb = Vocabulary::find($word);
-                if ($wordFromDb) {
-                    //If we have such hashed word - we don't need to encrypt it again(I think)
-                    $issetHash = HashedWord::where([
-                        'word_id' => $word,
-                        'algorithm' => $algorithm,
-                    ])->ofCurrentUser()->first();
-                    if ($issetHash) {
-                        $newHash = $issetHash;
-                    } else {
-                        //Creating new hash
-                        $hashedWord = hash($algorithm, $wordFromDb->word);
-                        $newHash = new HashedWord([
-                            'word_id' => $word,
-                            'hash' => $hashedWord,
-                            'algorithm' => $algorithm,
-                        ]);
-                        $newHash->save();
-                    }
-                    $newHashes[$wordFromDb->word][$algorithm] = $newHash;
-                }
-            }
-        }
+        $algorithms = $request->input('algorithms');
+        $newHashes = HashInstrument::hashAll($algorithms, $words);
+
         return [
             'words' => $newHashes
         ];

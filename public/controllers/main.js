@@ -61,6 +61,9 @@ angular.module('app').config(['$routeProvider', function ($routeProvider) {
                 }
             };
 
+            /**
+             * Adds a new word
+             */
             $scope.addWord = function () {
                 WordModel.create($scope.word).then(function (r) {
                     $scope.words.unshift(r.data.word);
@@ -70,11 +73,12 @@ angular.module('app').config(['$routeProvider', function ($routeProvider) {
 
             };
 
+            /**
+             * Find similar words
+             */
             $scope.searchWord = function () {
                 WordModel.search($scope.word).then(function (r) {
-                    $scope.words.unshift(r.data.word);
-                    $scope.selectedWords.push(r.data.word.id);
-                    $scope.word = '';
+                    $scope.words = r.data.words;
                 });
             };
 

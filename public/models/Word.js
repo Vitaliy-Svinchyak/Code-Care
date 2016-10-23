@@ -13,7 +13,7 @@
             }
 
             obj.search = function (word) {
-                return $http.post('/word/find', {word: $scope.word});
+                return $http.post('/word/find', {word: word});
             }
 
 
