@@ -1,0 +1,43 @@
+<md-toolbar class="success">
+    <div class="md-toolbar-tools">
+        <h2 class="md-flex"> Algorithms</h2>
+    </div>
+    <md-content flex layout-padding>
+        <div class="algorithms">
+            <div ng-repeat="item in functions" class="function-checkbox">
+                <md-checkbox ng-checked="existsFunction(item)" ng-click="toggle(item, selectedFunctions)">
+                    {{ item }}
+                </md-checkbox>
+            </div>
+        </div>
+    </md-content>
+</md-toolbar>
+
+<md-card-content>
+    <div layout="row">
+        <md-input-container>
+            <label>Word</label>
+            <input ng-model="word">
+        </md-input-container>
+        <md-button class="md-raised custom-button" ng-click="searchWord()" type="button">Search</md-button>
+        <md-button class="md-raised custom-button" ng-click="addWord()" type="button">Add</md-button>
+        <md-button class="md-raised custom-button" ng-click="hashWords()" type="button" ng-if="sthSelected()">Hash Selected</md-button>
+    </div>
+</md-card-content>
+
+<div class="words">
+    <div ng-repeat="item in words" class="function-checkbox">
+        <md-checkbox ng-checked="existsWord(item.id)" ng-click="toggle(item.id, selectedWords)">
+            {{ item.word }}
+        </md-checkbox>
+    </div>
+</div>
+
+<md-button flex="50" class="md-primary md-raised saved-button" ng-click="getSaved()">Saved</md-button>
+
+<div ng-controller="SavedController" ng-if="showSaved">
+    <br/>
+    <b layout="row" layout-align="center center" class="md-padding">
+        {{alert}}
+    </b>
+</div>

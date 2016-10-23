@@ -1,0 +1,60 @@
+<md-bottom-sheet class="md-list md-has-header">
+    <md-subheader ng-cloak>Saved Hashes</md-subheader>
+
+    <table class="dataTable saved-word-hashes">
+        <thead>
+        <th>
+            Algorithm
+        </th>
+        <th>
+            Hash
+        </th>
+        </thead>
+        <tbody>
+        <tr ng-repeat="(hashName, hashValue) in chosenWord">
+            <td> {{ hashName }}</td>
+            <td data-hash="{{hashValue}}"> {{hashValue}}</td>
+            <td>
+                <md-button class="md-raised custom-button" ng-click="full(hashValue)" type="button">full
+                </md-button>
+            </td>
+        </tr>
+        </tbody>
+
+    </table>
+    <md-list>
+        <md-list-item class="md-1-line saved-word" ng-repeat="(wordName, hashes) in words"
+                      ng-click="selectWord(wordName)">
+
+            <div class="md-list-item-text" layout="column">
+                {{wordName}}
+            </div>
+            <md-divider></md-divider>
+        </md-list-item>
+    </md-list>
+    <!--<md-tabs md-dynamic-height md-border-bottom>-->
+
+    <!--<md-tab ng-repeat="(wordName, hashes) in words" label="{{wordName}} ">-->
+    <!--<md-content class="md-padding">-->
+    <!--<table class="dataTable">-->
+    <!--<thead>-->
+    <!--<th>-->
+    <!--Algorithm-->
+    <!--</th>-->
+    <!--<th>-->
+    <!--Hash-->
+    <!--</th>-->
+    <!--</thead>-->
+    <!--<tbody>-->
+    <!--<tr ng-repeat="(hashName, hashValue) in hashes">-->
+    <!--<td> {{ hashName }}</td>-->
+    <!--<td> {{hashValue}}</td>-->
+    <!--</tr>-->
+    <!--</tbody>-->
+
+    <!--</table>-->
+
+    <!--</md-content>-->
+    <!--</md-tab>-->
+    <!--</md-tabs>-->
+</md-bottom-sheet>

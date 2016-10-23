@@ -1,0 +1,47 @@
+<md-dialog>
+    <form>
+        <md-toolbar>
+            <div class="md-toolbar-tools">
+                <h2>Hashed words</h2>
+                <span flex></span>
+                <md-button class="md-icon-button" ng-click="cancel()">
+                    X
+                </md-button>
+            </div>
+        </md-toolbar>
+
+        <md-dialog-content style="max-width:800px;max-height:810px; ">
+            <md-tabs md-dynamic-height md-border-bottom>
+
+                <md-tab ng-repeat="(wordName, hashes) in words" label="{{wordName}} ">
+                    <md-content class="md-padding">
+                        <table class="dataTable">
+                            <thead>
+                            <th>
+                                Algorithm
+                            </th>
+                            <th>
+                                Hash
+                            </th>
+                            </thead>
+                            <tbody>
+                            <tr ng-repeat="(hashName, hashValue) in hashes">
+                                <td> {{ hashName }}</td>
+                                <td> {{hashValue.hash}}</td>
+                            </tr>
+                            </tbody>
+
+                        </table>
+
+                    </md-content>
+                </md-tab>
+            </md-tabs>
+        </md-dialog-content>
+
+        <md-dialog-actions layout="row">
+            <md-button ng-click="close()" style="margin-right:20px;">
+                Ok
+            </md-button>
+        </md-dialog-actions>
+    </form>
+</md-dialog>

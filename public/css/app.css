@@ -1,0 +1,148 @@
+body {
+    background-color: rgb(250, 250, 250);
+    top: 0 !important;
+
+}
+
+.main-view {
+    padding: 20px;
+}
+
+.algorithms {
+    display: -ms-flexbox;
+    display: -webkit-flex;
+    display: flex;
+    -webkit-flex-direction: row;
+    -ms-flex-direction: row;
+    flex-direction: row;
+    -webkit-flex-wrap: wrap;
+    -ms-flex-wrap: wrap;
+    flex-wrap: wrap;
+    -webkit-justify-content: flex-start;
+    -ms-flex-pack: start;
+    justify-content: flex-start;
+    -webkit-align-content: flex-start;
+    -ms-flex-line-pack: start;
+    align-content: flex-start;
+    -webkit-align-items: flex-start;
+    -ms-flex-align: start;
+    align-items: flex-start;
+    font-size: 16px;
+}
+
+.function-checkbox {
+    -webkit-order: 0;
+    -ms-flex-order: 0;
+    order: 0;
+    -webkit-flex: 0 1 auto;
+    -ms-flex: 0 1 auto;
+    flex: 0 1 auto;
+    -webkit-align-self: auto;
+    -ms-flex-item-align: auto;
+    align-self: auto;
+    width: 150px;
+}
+
+.custom-button {
+    height: 22px;
+    margin-top: 17px !important;
+}
+
+.dataTable {
+    border: 1px solid rgba(0, 0, 0, .12);
+    border-collapse: collapse;
+    white-space: nowrap;
+    background-color: #fff;
+    font-size: 14px;
+}
+
+.dataTable th {
+    text-align: center;
+}
+
+.dataTable.saved-word-hashes td {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    max-width: 200px;
+    white-space: nowrap;
+}
+.dataTable td {
+    border-top: 1px solid rgba(0, 0, 0, .12);
+    border-bottom: 1px solid rgba(0, 0, 0, .12);
+    padding: 8px;
+    vertical-align: middle;
+
+}
+
+.saved-button {
+    position: fixed !important;
+    right: 20px;
+    bottom: 20px;
+}
+
+.bottomSheetdemoBasicUsage .md-inline-list-icon-label {
+    display: inline-block;
+    padding-left: 10px;
+    padding-right: 10px;
+    margin-top: -10px;
+    height: 24px;
+    vertical-align: middle;
+}
+
+.bottomSheetdemoBasicUsage .md-grid-item-content {
+    height: 90px;
+    padding-top: 10px;
+}
+
+.bottomSheetdemoBasicUsage .md-grid-item-content md-icon {
+    height: 48px;
+    width: 48px;
+}
+
+.bottomSheetdemoBasicUsage .md-grid-text {
+    padding-bottom: 5px;
+}
+
+.bottomSheetdemoBasicUsage md-list-item, .bottomSheetdemoBasicUsage md-list-item .md-list-item-inner {
+    min-height: 48px;
+}
+
+.bottomSheetdemoBasicUsage h2 {
+    line-height: 36px;
+    padding-top: 10px;
+}
+
+.bottomSheetdemoBasicUsage .md-subheader .md-subheader-inner {
+    padding: 0;
+}
+
+.bottomSheetdemoBasicUsage md-toast .md-toast-content {
+    background-color: #B14141;
+}
+
+.bottomSheetdemoBasicUsage md-toast > * {
+    font-weight: bolder;
+}
+
+md-bottom-sheet.md-has-header {
+    max-height: 50%;
+    overflow: scroll;
+}
+
+.saved-word {
+    min-height: 24px;
+}
+
+md-list {
+    width: 50%;
+}
+
+.saved-word-hashes {
+    width: 40%;
+    float: right;
+    max-width: 40%;
+}
+
+input.copy-input {
+    padding: 5px;
+}
