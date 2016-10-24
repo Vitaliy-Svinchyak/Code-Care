@@ -9,6 +9,8 @@ use Illuminate\Support\Facades\Request;
 
 class Geo
 {
+    static $geoInfo = [];
+
     /**
      * Returns users country
      * @return string
@@ -27,13 +29,16 @@ class Geo
      */
     public static function getGeoInformation() : array
     {
-        $geoInfo = [];
-        $ip = Request::ip();
-        if ($ip) {
-            $data = Curl::to('http://ipgeobase.ru:7020/geo?ip=' . '37.57.105.72')->get();
-            $geoInfo = Formatter::make($data, Formatter::XML)->toArray();
+        if (!static::$geoInfo) {
+            $geoInfo = [];
+            $ip = Request::ip();
+            if ($ip) {
+                $data = Curl::to('http://ipgeobase.ru:7020/geo?ip=' . '37.57.105.72')->get();
+                static::$geoInfo = Formatter::make($data, Formatter::XML)->toArray();
+            }
         }
-        return $geoInfo;
+
+        return static::$geoInfo;
     }
 
 }
