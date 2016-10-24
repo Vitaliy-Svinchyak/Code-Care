@@ -15,8 +15,11 @@ use Illuminate\Database\Query\Builder;
 class HashedWordQueryBuilder extends Builder
 {
 
-    public function ofCurrentUser()
+    public function ofCurrentUser(int $wordId = 0)
     {
+        if ($wordId > 0) {
+            $this->where('word_id', $wordId);
+        }
         $userId = UserDetector::detect();
         return $this->where('user_id', $userId);
     }

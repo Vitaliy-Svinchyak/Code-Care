@@ -19,4 +19,4 @@ Route::resource('word', 'WordController',
 Route::resource('word/find', 'WordController@find');
 
 Route::resource('hash', 'HashController',
-    ['only' => ['store', 'index']]);
+    ['only' => ['store', 'index', 'show']]);

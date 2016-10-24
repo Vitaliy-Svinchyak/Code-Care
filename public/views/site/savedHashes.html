@@ -1,40 +1,16 @@
 <md-bottom-sheet class="md-list md-has-header">
-    <md-subheader ng-cloak>Saved Hashes</md-subheader>
+    <md-subheader ng-cloak>
+        <h3>
+            Saved Hashes
+        </h3>
 
-    <table class="dataTable saved-word-hashes">
-        <thead>
-        <th>
-            Algorithm
-        </th>
-        <th>
-            Hash
-        </th>
-        <th>
-            &nbsp;
-        </th>
-        </thead>
-        <tbody>
-        <tr ng-repeat="(hashName, hashValue) in chosenWord">
-            <td> {{ hashName }}</td>
-            <td data-hash="{{hashValue}}" ng-bind-html="hashValue"></td>
-            <td ng-if="needsFull(hashValue)">
-                <md-button class="md-raised custom-button2" ng-click="full(hashName)" type="button">full
-                </md-button>
-            </td>
-            <td ng-if="!needsFull(hashValue)">
-                &nbsp;
-            </td>
-
-        </tr>
-        </tbody>
-
-    </table>
-    <md-list>
-        <md-list-item class="md-1-line saved-word" ng-repeat="(wordName, hashes) in words"
-                      ng-click="selectWord(wordName)">
+    </md-subheader>
+    <md-list class="saved-words-list">
+        <md-list-item class="md-1-line saved-word-in-list" ng-repeat="word in words"
+                      ng-click="selectWord(word.id)">
 
             <div class="md-list-item-text" layout="column">
-                {{wordName}}
+                {{::word.word}}
             </div>
             <md-divider></md-divider>
         </md-list-item>

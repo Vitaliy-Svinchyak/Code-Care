@@ -65,12 +65,13 @@ angular.module('app').config(['$routeProvider', function ($routeProvider) {
              * Adds a new word
              */
             $scope.addWord = function () {
-                WordModel.create($scope.word).then(function (r) {
-                    $scope.words.unshift(r.data.word);
-                    $scope.selectedWords.push(r.data.word.id);
-                    $scope.word = '';
-                });
-
+                if ($scope.word.trim().length != 0) {
+                    WordModel.create($scope.word).then(function (r) {
+                        $scope.words.unshift(r.data.word);
+                        $scope.selectedWords.push(r.data.word.id);
+                        $scope.word = '';
+                    });
+                }
             };
 
             /**
@@ -140,8 +141,8 @@ angular.module('app').config(['$routeProvider', function ($routeProvider) {
             };
         }])
     //Controller for saved words
-    .controller('SavedController', ['$scope', 'HashModel', '$sce',
-        function ($scope, HashModel, $sce) {
+    .controller('SavedController', ['$scope', 'HashModel', '$sce', '$mdDialog',
+        function ($scope, HashModel, $sce, $mdDialog) {
             $scope.words = [];
             $scope.chosenWord = {};
             //Request for getting all saved words
@@ -154,34 +155,18 @@ angular.module('app').config(['$routeProvider', function ($routeProvider) {
              * Selects a new word to view his hashes
              * @param word
              */
-            $scope.selectWord = function (word) {
-                var word = $scope.words[word];
-                var key;
-                for(key in word){
-                    if(word.hasOwnProperty(key) && typeof( word[key] ) == 'string'){
-                        word[key] = $sce.trustAsHtml(word[key]);
-                    }
-                }
-                $scope.chosenWord = word;
-            };
-
-            /**
-             * Detects if word needs "FULL" button
-             * @param hash
-             * @returns {boolean}
-             */
-            $scope.needsFull = function(hash){
-                return hash.toString().length > 24;
-            }
-
-            /**
-             * Creates a text input to get user a possibility to copy a long hash
-             * @param hash
-             */
-            $scope.full = function (hashName) {
-                if($scope.chosenWord[hashName].toString().indexOf('input') === -1){
-                    var html = `<input type='text' value='${$scope.chosenWord[hashName]} class='copy-input'>`;
-                    $scope.chosenWord[hashName] = $sce.trustAsHtml(html);
-                }
+            $scope.selectWord = function (wordId) {
+                HashModel.get(wordId).then(function (r) {
+                    var words = r.data.words;
+                    $mdDialog.show({
+                        controller: 'DialogController',
+                        templateUrl: '/views/site/HashedDialog.html',
+                        parent: angular.element(document.body),
+                        clickOutsideToClose: true,
+                        locals: {
+                            words: words
+                        }
+                    });
+                });
             };
         }]);

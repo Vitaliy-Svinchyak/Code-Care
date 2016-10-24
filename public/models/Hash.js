@@ -12,8 +12,13 @@
                 return $http.post('/hash', {words: selectedWords, algorithms: selectedFunctions});
             }
 
-            obj.get = function (word) {
-                return  $http.get('/hash');
+            obj.get = function (wordId) {
+                if (wordId) {
+                    return $http.get(`/hash/${wordId}`);
+                }
+                else {
+                    return $http.get('/hash');
+                }
             }
 
 

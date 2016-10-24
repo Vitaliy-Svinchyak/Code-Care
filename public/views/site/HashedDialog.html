@@ -25,9 +25,9 @@
                             </th>
                             </thead>
                             <tbody>
-                            <tr ng-repeat="(hashName, hashValue) in hashes">
-                                <td> {{ hashName }}</td>
-                                <td> {{hashValue.hash}}</td>
+                            <tr ng-repeat="hashedWord in hashes">
+                                <td> {{::hashedWord.algorithm}}</td>
+                                <td> {{::hashedWord.hash}}</td>
                             </tr>
                             </tbody>
 

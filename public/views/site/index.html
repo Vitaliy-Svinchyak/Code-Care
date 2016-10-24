@@ -6,7 +6,7 @@
         <div class="algorithms">
             <div ng-repeat="item in functions" class="function-checkbox">
                 <md-checkbox ng-checked="existsFunction(item)" ng-click="toggle(item, selectedFunctions)">
-                    {{ item }}
+                    {{ ::item }}
                 </md-checkbox>
             </div>
         </div>
@@ -28,7 +28,7 @@
 <div class="words">
     <div ng-repeat="item in words" class="function-checkbox">
         <md-checkbox ng-checked="existsWord(item.id)" ng-click="toggle(item.id, selectedWords)">
-            {{ item.word }}
+            {{ ::item.word }}
         </md-checkbox>
     </div>
 </div>

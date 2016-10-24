@@ -22,8 +22,12 @@ class HashInstrument
      */
     public static function hashAll(array $algorithms, array $words) : array
     {
+        $hashFunctions = hash_algos();
         $newHashes = [];
         foreach ($algorithms as $algorithm) {
+            if (array_search($algorithm, $hashFunctions) === false) {
+                continue;
+            }
             foreach ($words as $word) {
                 //Checking if we have such word
                 $wordFromDb = Vocabulary::find($word);

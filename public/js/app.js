@@ -28,7 +28,8 @@
             });
 
             $mdThemingProvider.theme('default')
-                .primaryPalette('fiolet');
+                .primaryPalette('fiolet')
+                .accentPalette('grey');
 
         }
     ]);
