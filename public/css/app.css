@@ -48,10 +48,6 @@ body {
     margin-top: 17px !important;
 }
 
-.custom-button2 {
-    height: 22px;
-}
-
 .dataTable {
     border: 1px solid rgba(0, 0, 0, .12);
     border-collapse: collapse;
@@ -76,6 +72,7 @@ body {
     position: fixed !important;
     right: 20px;
     bottom: 20px;
+    z-index: 2;
 }
 
 .md-button.hash-button {
@@ -83,11 +80,12 @@ body {
     right: 120px;
     bottom: 20px;
     color: white;
-    background-color: rgba(0,0,0,0.87);
+    background-color: rgba(0, 0, 0, 0.87);
+    z-index: 2;
 }
 
 .md-button.hash-button:hover {
-    background-color: rgba(0,0,0,0.87) !important;
+    background-color: rgba(0, 0, 0, 0.87) !important;
 }
 
 .bottomSheetdemoBasicUsage .md-inline-list-icon-label {
@@ -137,4 +135,26 @@ body {
 md-bottom-sheet.md-has-header {
     max-height: 50%;
     overflow: scroll;
+}
+
+@media screen and (max-width: 400px) {
+
+    .search-input {
+        min-width: 100%;
+    }
+
+    .row-search {
+        flex-direction: column !important;
+        padding-bottom: 30px;
+    }
+
+    .row-search md-input-container {
+        margin-bottom: 0;
+    }
+
+    md-dialog {
+        max-width: 100% !important;
+        max-height: 100% !important;
+    }
+
 }

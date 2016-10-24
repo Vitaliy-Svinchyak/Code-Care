@@ -14,14 +14,15 @@
 </md-toolbar>
 
 <md-card-content>
-    <div layout="row">
-        <md-input-container>
+    <div layout="row"  class="row-search">
+        <md-input-container class="search-input">
             <label>Word</label>
             <input ng-model="word">
         </md-input-container>
-        <md-button class="md-raised custom-button" ng-click="searchWord()" type="button">Search</md-button>
-        <md-button class="md-raised custom-button" ng-click="addWord()" type="button">Add</md-button>
-        <md-button class="md-raised custom-button hash-button" ng-click="hashWords()" type="button" ng-if="sthSelected()">Hash Selected</md-button>
+        <div class="input-buttons">
+            <md-button class="md-raised custom-button" ng-click="searchWord()" type="button">Search</md-button>
+            <md-button class="md-raised custom-button" ng-click="addWord()" type="button">Add</md-button>
+        </div>
     </div>
 </md-card-content>
 
@@ -34,7 +35,9 @@
 </div>
 
 <md-button flex="50" class="md-primary md-raised saved-button" ng-click="getSaved()">Saved</md-button>
-
+<md-button class="md-raised custom-button hash-button" ng-click="hashWords()" type="button"
+           ng-if="sthSelected()">Hash Selected
+</md-button>
 <div ng-controller="SavedController" ng-if="showSaved">
     <br/>
     <b layout="row" layout-align="center center" class="md-padding">
