@@ -140,8 +140,8 @@ angular.module('app').config(['$routeProvider', function ($routeProvider) {
             };
         }])
     //Controller for saved words
-    .controller('SavedController', ['$scope', 'HashModel',
-        function ($scope, HashModel) {
+    .controller('SavedController', ['$scope', 'HashModel', '$sce',
+        function ($scope, HashModel, $sce) {
             $scope.words = [];
             $scope.chosenWord = {};
             //Request for getting all saved words
@@ -155,7 +155,14 @@ angular.module('app').config(['$routeProvider', function ($routeProvider) {
              * @param word
              */
             $scope.selectWord = function (word) {
-                $scope.chosenWord = $scope.words[word];
+                var word = $scope.words[word];
+                var key;
+                for(key in word){
+                    if(word.hasOwnProperty(key) && typeof( word[key] ) == 'string'){
+                        word[key] = $sce.trustAsHtml(word[key]);
+                    }
+                }
+                $scope.chosenWord = word;
             };
 
             /**
@@ -164,26 +171,17 @@ angular.module('app').config(['$routeProvider', function ($routeProvider) {
              * @returns {boolean}
              */
             $scope.needsFull = function(hash){
-                return hash.length > 24;
+                return hash.toString().length > 24;
             }
 
             /**
              * Creates a text input to get user a possibility to copy a long hash
              * @param hash
              */
-            $scope.full = function (hash) {
-                var issetInput = document.querySelector(`[data-hash="${hash}"] input`);
-                if (issetInput) {
-                    issetInput.value = hash;
-                }
-                else {
-                    var elem = document.querySelector(`[data-hash="${hash}"]`);
-                    var input = document.createElement('input');
-                    input.type = 'text';
-                    input.value = hash;
-                    input.classList.add('copy-input');
-                    elem.textContent = '';
-                    elem.appendChild(input);
+            $scope.full = function (hashName) {
+                if($scope.chosenWord[hashName].toString().indexOf('input') === -1){
+                    var html = `<input type='text' value='${$scope.chosenWord[hashName]} class='copy-input'>`;
+                    $scope.chosenWord[hashName] = $sce.trustAsHtml(html);
                 }
             };
         }]);
