@@ -9,6 +9,7 @@ namespace App\Models;
 
 use DB;
 use Illuminate\Database\Eloquent\Model;
+use App\QueryBuilders\VocabularyQueryBuilder as QueryBuilder;
 
 class Vocabulary extends Model
 {
@@ -25,18 +26,17 @@ class Vocabulary extends Model
     public $timestamps = false;
 
     /**
-     * Returns query for first 25 user words
-     * @return QueryBuilder
+     * Get a new query builder instance for the connection.
+     *
+     * @return \Illuminate\Database\Query\Builder
      */
-    public static function ofCurrentUser()
+    protected function newBaseQueryBuilder()
     {
-        $wordIds = HashedWord::ofCurrentUser()
-            ->select(DB::raw('DISTINCT word_id'))
-            ->take(25)
-            ->get()
-            ->toArray();
+        $conn = $this->getConnection();
 
-        return static::whereIn('id', $wordIds);
+        $grammar = $conn->getQueryGrammar();
+
+        return new QueryBuilder($conn, $grammar, $conn->getPostProcessor());
     }
 
 }

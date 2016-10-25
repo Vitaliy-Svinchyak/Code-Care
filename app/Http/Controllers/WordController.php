@@ -22,7 +22,7 @@ class WordController extends Controller
     public function find(Request $request)
     {
         $word = $request->input('word');
-        $issetWords = Vocabulary::where('word', 'LIKE', "%{$word}%")->take(25)->get();
+        $issetWords = Vocabulary::ofCurrentUser()->where('word', 'LIKE', "%{$word}%")->take(25)->get();
         return ['words' => $issetWords];
     }
 

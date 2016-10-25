@@ -20,22 +20,31 @@ class HashInstrument
      * @param array $words
      * @return array
      */
-    public static function hashAll(array $algorithms, array $words) : array
+    public static function hashAll(array $algorithms, array $wordsIds) : array
     {
         $hashFunctions = hash_algos();
         $newHashes = [];
+
+        $words = Vocabulary::whereIn('id', $wordsIds)->get()->keyBy('id');
+
         foreach ($algorithms as $algorithm) {
             if (array_search($algorithm, $hashFunctions) === false) {
                 continue;
             }
+            //Selecting ready hashes
+            $issetHashes = HashedWord::whereIn('word_id', $wordsIds)
+                ->where('algorithm', $algorithm)->ofCurrentUser()->get();
+            foreach ($issetHashes as $issetHash) {
+                $newHashes[$words[$issetHash->word_id]->word][$algorithm] = $issetHash;
+            }
+            //Creating new hashes
             foreach ($words as $word) {
-                //Checking if we have such word
-                $wordFromDb = Vocabulary::find($word);
-                if ($wordFromDb) {
-                    $newHashes[$wordFromDb->word][$algorithm] = static::hashOne($algorithm, $wordFromDb);
+                if (!isset($newHashes[$word->word][$algorithm])) {
+                    $newHashes[$word->word][$algorithm] = static::hashOne($algorithm, $word);
                 }
             }
         }
+
         return $newHashes;
     }
 
@@ -47,23 +56,15 @@ class HashInstrument
      */
     public static function hashOne(string $algorithm, Vocabulary $wordFromDb) : HashedWord
     {
-        //If we have such hashed word - we don't need to encrypt it again(I think)
-        $issetHash = HashedWord::where([
+        //Creating new hash
+        $hashedWord = hash($algorithm, $wordFromDb->word);
+        $newHash = new HashedWord([
             'word_id' => $wordFromDb->id,
+            'hash' => $hashedWord,
             'algorithm' => $algorithm,
-        ])->ofCurrentUser()->first();
-        if ($issetHash) {
-            $newHash = $issetHash;
-        } else {
-            //Creating new hash
-            $hashedWord = hash($algorithm, $wordFromDb->word);
-            $newHash = new HashedWord([
-                'word_id' => $wordFromDb->id,
-                'hash' => $hashedWord,
-                'algorithm' => $algorithm,
-            ]);
-            $newHash->save();
-        }
+        ]);
+        $newHash->save();
+
         return $newHash;
     }
 }

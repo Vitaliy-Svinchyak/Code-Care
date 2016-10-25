@@ -15,6 +15,7 @@ use App\Lib\Geo;
 
 class UserDetector
 {
+    protected static $user;
     public static function detect()
     {
         $user = static::findUser();
@@ -23,19 +24,22 @@ class UserDetector
 
     protected static function findUser() : User
     {
-        $ip = Request::ip();
-        $browser = Request::header('User-Agent');
-        $cookie = json_encode(Cookie::get());
-        $country = Geo::getUsersCountry();
-        $user = User::firstOrNew([
-            'ip' => $ip,
-            'browser' => $browser,
-            'country' => $country
-        ]);
-        if ($user->cookie != $cookie) {
-            $user->cookie = $cookie;
+        if(!static::$user) {
+            $ip = Request::ip();
+            $browser = Request::header('User-Agent');
+            $cookie = json_encode(Cookie::get());
+            $country = Geo::getUsersCountry();
+            $user = User::firstOrNew([
+                'ip' => $ip,
+                'browser' => $browser,
+                'country' => $country
+            ]);
+            if ($user->cookie != $cookie) {
+                $user->cookie = $cookie;
+            }
+            $user->save();
+            static::$user = $user;
         }
-        $user->save();
-        return $user;
+        return static::$user;
     }
 }
