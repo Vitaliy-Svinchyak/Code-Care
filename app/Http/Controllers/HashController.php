@@ -9,8 +9,8 @@ namespace App\Http\Controllers;
 
 use App\Models\HashedWord;
 use App\Models\Vocabulary;
-use Illuminate\Http\Request;
 use App\Lib\HashInstrument;
+use Illuminate\Http\Request;
 
 class HashController extends Controller
 {

@@ -87,7 +87,6 @@
 
                     HashModel.create($scope.selectedWords, $scope.selectedFunctions)
                         .then(function (r) {
-                            console.log(r.data.words);
                             $mdDialog.show({
                                 controller: 'DialogController',
                                 templateUrl: '/views/site/HashedDialog.html',

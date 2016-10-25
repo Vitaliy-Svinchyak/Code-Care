@@ -136,6 +136,9 @@ md-bottom-sheet.md-has-header {
     max-height: 50%;
     overflow: scroll;
 }
+md-pagination-wrapper {
+    width: 999999px !important;
+}
 
 @media screen and (max-width: 400px) {
 

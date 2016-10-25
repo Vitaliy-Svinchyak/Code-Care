@@ -21,5 +21,6 @@
                 $scope.close = function () {
                     $mdDialog.hide();
                 };
+
             }])
 })();

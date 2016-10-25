@@ -17,7 +17,7 @@ class HashInstrument
     /**
      * Hashes all words with all algorithms
      * @param array $algorithms
-     * @param array $words
+     * @param array $wordsIds
      * @return array
      */
     public static function hashAll(array $algorithms, array $wordsIds) : array
