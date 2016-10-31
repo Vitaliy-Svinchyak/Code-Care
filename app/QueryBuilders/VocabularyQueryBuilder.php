@@ -1,4 +1,5 @@
 <?php
+declare(strict_types=1);
 /**
  * Created by PhpStorm.
  * User: svinchak.v
@@ -7,15 +8,14 @@
  */
 namespace App\QueryBuilders;
 
-use DB;
-use App\Product;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Database\Query\Builder;
 use App\Models\HashedWord;
 
 class VocabularyQueryBuilder extends Builder
 {
 
-    public function ofCurrentUser(int $wordId = 0)
+    public function ofCurrentUser()
     {
         $wordIds = HashedWord::ofCurrentUser()
             ->select(DB::raw('DISTINCT word_id'))

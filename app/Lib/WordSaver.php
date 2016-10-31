@@ -1,4 +1,5 @@
 <?php
+declare(strict_types=1);
 /**
  * Created by PhpStorm.
  * User: opiru
@@ -10,6 +11,10 @@ namespace App\Lib;
 
 use App\Models\Vocabulary;
 
+/**
+ * Class WordSaver
+ * @package App\Lib
+ */
 class WordSaver
 {
     /**

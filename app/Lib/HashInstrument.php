@@ -1,4 +1,5 @@
 <?php
+declare(strict_types = 1);
 /**
  * Created by PhpStorm.
  * User: opiru
@@ -11,6 +12,10 @@ namespace App\Lib;
 use App\Models\Vocabulary;
 use App\Models\HashedWord;
 
+/**
+ * Class HashInstrument
+ * @package App\Lib
+ */
 class HashInstrument
 {
 
@@ -26,18 +31,23 @@ class HashInstrument
         $newHashes = [];
 
         $words = Vocabulary::whereIn('id', $wordsIds)->get()->keyBy('id');
-
         foreach ($algorithms as $algorithm) {
-            if (array_search($algorithm, $hashFunctions) === false) {
+            if (!in_array($algorithm, $hashFunctions, true)) {
                 continue;
             }
             //Selecting ready hashes
             $issetHashes = HashedWord::whereIn('word_id', $wordsIds)
                 ->where('algorithm', $algorithm)->ofCurrentUser()->get();
+            /**
+             * @var array $issetHashes
+             */
             foreach ($issetHashes as $issetHash) {
                 $newHashes[$words[$issetHash->word_id]->word][$algorithm] = $issetHash;
             }
             //Creating new hashes
+            /**
+             * @var array $words
+             */
             foreach ($words as $word) {
                 if (!isset($newHashes[$word->word][$algorithm])) {
                     $newHashes[$word->word][$algorithm] = static::hashOne($algorithm, $word);

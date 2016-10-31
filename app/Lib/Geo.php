@@ -1,5 +1,5 @@
 <?php
-
+declare(strict_types = 1);
 
 namespace App\Lib;
 
@@ -8,15 +8,19 @@ use SoapBox\Formatter\Formatter;
 use Illuminate\Support\Facades\Request;
 use Illuminate\Support\Facades\Session;
 
+/**
+ * Class Geo
+ * @package App\Lib
+ */
 class Geo
 {
-    static $geoInfo = [];
+    protected static $geoInfo = [];
 
     /**
      * Returns users country
-     * @return string
+     * @return string|bool
      */
-    public static function getUsersCountry() : string
+    public static function getUsersCountry()
     {
         $geoInfo = static::getGeoInformation();
         $country = $geoInfo['ip']['country'] ?? false;

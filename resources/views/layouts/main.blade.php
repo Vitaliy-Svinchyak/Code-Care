@@ -33,6 +33,5 @@
 <script src="{{ asset('/controllers/SavedController.js') }}"></script>
 <script src="{{ asset('/models/Word.js') }}"></script>
 <script src="{{ asset('/models/Hash.js') }}"></script>
-{{--<script src="{{ asset('/models/HashedWord.js') }}"></script>--}}
 </body>
 </html>

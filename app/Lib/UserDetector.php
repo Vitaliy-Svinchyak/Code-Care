@@ -1,4 +1,5 @@
 <?php
+declare(strict_types=1);
 /**
  * Created by PhpStorm.
  * User: opiru
@@ -11,17 +12,29 @@ namespace App\Lib;
 use App\Models\User;
 use Illuminate\Support\Facades\Request;
 use Illuminate\Support\Facades\Cookie;
-use App\Lib\Geo;
 
+/**
+ * Class UserDetector
+ * @package App\Lib
+ */
 class UserDetector
 {
     protected static $user;
-    public static function detect()
+
+    /**
+     * Returns an id of current user
+     * @return int
+     */
+    public static function detect() : int
     {
         $user = static::findUser();
         return $user->id;
     }
 
+    /**
+     * Detects user
+     * @return User
+     */
     protected static function findUser() : User
     {
         if(!static::$user) {
@@ -34,12 +47,13 @@ class UserDetector
                 'browser' => $browser,
                 'country' => $country
             ]);
-            if ($user->cookie != $cookie) {
+            if ($user->cookie !== $cookie) {
                 $user->cookie = $cookie;
             }
             $user->save();
             static::$user = $user;
         }
+
         return static::$user;
     }
 }

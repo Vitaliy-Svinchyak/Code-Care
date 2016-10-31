@@ -1,4 +1,5 @@
 <?php
+declare(strict_types=1);
 /**
  * Created by PhpStorm.
  * User: opiru
@@ -11,6 +12,10 @@ use App\Lib\WordSaver;
 use App\Models\Vocabulary;
 use Illuminate\Http\Request;
 
+/**
+ * Class WordController
+ * @package App\Http\Controllers
+ */
 class WordController extends Controller
 {
 

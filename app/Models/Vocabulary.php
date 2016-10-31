@@ -1,4 +1,5 @@
 <?php
+declare(strict_types = 1);
 /**
  * Created by PhpStorm.
  * User: opiru
@@ -11,6 +12,10 @@ use DB;
 use Illuminate\Database\Eloquent\Model;
 use App\QueryBuilders\VocabularyQueryBuilder as QueryBuilder;
 
+/**
+ * @property mixed word
+ * @property mixed id
+ */
 class Vocabulary extends Model
 {
     protected $table = 'vocabulary';
