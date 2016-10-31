@@ -1,4 +1,5 @@
 <?php
+declare(strict_types=1);
 /**
  * Created by PhpStorm.
  * User: opiru
@@ -9,9 +10,13 @@ namespace App\Http\Controllers;
 
 use App\Models\HashedWord;
 use App\Models\Vocabulary;
-use Illuminate\Http\Request;
 use App\Lib\HashInstrument;
+use Illuminate\Http\Request;
 
+/**
+ * Class HashController
+ * @package App\Http\Controllers
+ */
 class HashController extends Controller
 {
 
@@ -25,11 +30,15 @@ class HashController extends Controller
         return ['words' => $words];
     }
 
+    /**
+     * @param int $wordId
+     * @return array
+     */
     public function show(int $wordId)
     {
         $response = [];
         $word = Vocabulary::find($wordId);
-        $response[$word->word] = HashedWord::ofCurrentUser($wordId)->get();;
+        $response[$word->word] = HashedWord::ofCurrentUser($wordId)->get();
         return ['words' => $response];
     }
 

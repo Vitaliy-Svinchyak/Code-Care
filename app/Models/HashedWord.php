@@ -1,4 +1,5 @@
 <?php
+declare(strict_types=1);
 /**
  * Created by PhpStorm.
  * User: opiru
@@ -10,6 +11,10 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Model;
 use App\QueryBuilders\HashedWordQueryBuilder as QueryBuilder;
 
+/**
+ * Class HashedWord
+ * @package App\Models
+ */
 class HashedWord extends Model
 {
 
@@ -29,11 +34,17 @@ class HashedWord extends Model
 
     public $timestamps = false;
 
+    /**
+     * @return \Illuminate\Database\Eloquent\Relations\HasOne
+     */
     public function word()
     {
         return $this->hasOne(Vocabulary::class, 'id', 'word_id');
     }
 
+    /**
+     * @return \Illuminate\Database\Eloquent\Relations\HasOne
+     */
     public function user()
     {
         return $this->hasOne(User::class, 'id', 'user_id');

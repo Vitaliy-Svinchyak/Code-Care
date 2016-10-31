@@ -1,4 +1,5 @@
 <?php
+declare(strict_types=1);
 /**
  * Created by PhpStorm.
  * User: opiru
@@ -12,8 +13,15 @@ use Illuminate\Routing\Controller as BaseController;
 use App\Models\Vocabulary;
 
 
+/**
+ * Class IndexController
+ * @package App\Http\Controllers
+ */
 class IndexController extends BaseController
 {
+    /**
+     * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
+     */
     public function showIndex()
     {
         return view('index');

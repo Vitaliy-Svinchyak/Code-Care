@@ -1,21 +1,26 @@
 <?php
-
+declare(strict_types = 1);
 
 namespace App\Lib;
 
 use Ixudra\Curl\Facades\Curl;
 use SoapBox\Formatter\Formatter;
 use Illuminate\Support\Facades\Request;
+use Illuminate\Support\Facades\Session;
 
+/**
+ * Class Geo
+ * @package App\Lib
+ */
 class Geo
 {
-    static $geoInfo = [];
+    protected static $geoInfo = [];
 
     /**
      * Returns users country
-     * @return string
+     * @return string|bool
      */
-    public static function getUsersCountry() : string
+    public static function getUsersCountry()
     {
         $geoInfo = static::getGeoInformation();
         $country = $geoInfo['ip']['country'] ?? false;
@@ -29,16 +34,17 @@ class Geo
      */
     public static function getGeoInformation() : array
     {
-        if (!static::$geoInfo) {
-            $geoInfo = [];
+        $geoInfo = Session::get('geoInfo');
+
+        if (!$geoInfo) {
             $ip = Request::ip();
             if ($ip) {
                 $data = Curl::to('http://ipgeobase.ru:7020/geo?ip=' . '37.57.105.72')->get();
-                static::$geoInfo = Formatter::make($data, Formatter::XML)->toArray();
+                $geoInfo = Formatter::make($data, Formatter::XML)->toArray();
+                Session::set('geoInfo', $geoInfo);
             }
         }
-
-        return static::$geoInfo;
+        return $geoInfo;
     }
 
 }

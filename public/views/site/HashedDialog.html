@@ -13,7 +13,7 @@
         <md-dialog-content style="max-width:800px;max-height:810px; ">
             <md-tabs md-dynamic-height md-border-bottom>
 
-                <md-tab ng-repeat="(wordName, hashes) in words" label="{{wordName}} ">
+                <md-tab ng-repeat="(wordName, hashes) in words" label="{{wordName}}">
                     <md-content class="md-padding">
                         <table class="dataTable">
                             <thead>
@@ -30,7 +30,6 @@
                                 <td> {{::hashedWord.hash}}</td>
                             </tr>
                             </tbody>
-
                         </table>
 
                     </md-content>

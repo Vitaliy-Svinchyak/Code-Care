@@ -1,4 +1,5 @@
 <?php
+declare(strict_types=1);
 /**
  * Created by PhpStorm.
  * User: opiru
@@ -11,6 +12,10 @@ use App\Lib\WordSaver;
 use App\Models\Vocabulary;
 use Illuminate\Http\Request;
 
+/**
+ * Class WordController
+ * @package App\Http\Controllers
+ */
 class WordController extends Controller
 {
 
@@ -22,7 +27,7 @@ class WordController extends Controller
     public function find(Request $request)
     {
         $word = $request->input('word');
-        $issetWords = Vocabulary::where('word', 'LIKE', "%{$word}%")->take(25)->get();
+        $issetWords = Vocabulary::ofCurrentUser()->where('word', 'LIKE', "%{$word}%")->take(25)->get();
         return ['words' => $issetWords];
     }
 

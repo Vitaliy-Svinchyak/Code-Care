@@ -24,10 +24,14 @@
 <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.5.5/angular-aria.min.js"></script>
 <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.5.5/angular-messages.min.js"></script>
 <script src="https://cdn.gitcdn.link/cdn/angular/bower-material/v1.1.1/angular-material.js"></script>
+
 <script src="{{ asset('/js/app.js') }}"></script>
-<script src="{{ asset('/controllers/main.js') }}"></script>
+<script src="{{ asset('/config/theme.js') }}"></script>
+<script src="{{ asset('/config/route.js') }}"></script>
+<script src="{{ asset('/controllers/IndexController.js') }}"></script>
+<script src="{{ asset('/controllers/DialogController.js') }}"></script>
+<script src="{{ asset('/controllers/SavedController.js') }}"></script>
 <script src="{{ asset('/models/Word.js') }}"></script>
 <script src="{{ asset('/models/Hash.js') }}"></script>
-{{--<script src="{{ asset('/models/HashedWord.js') }}"></script>--}}
 </body>
 </html>

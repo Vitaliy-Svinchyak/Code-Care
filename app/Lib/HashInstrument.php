@@ -1,4 +1,5 @@
 <?php
+declare(strict_types = 1);
 /**
  * Created by PhpStorm.
  * User: opiru
@@ -11,31 +12,49 @@ namespace App\Lib;
 use App\Models\Vocabulary;
 use App\Models\HashedWord;
 
+/**
+ * Class HashInstrument
+ * @package App\Lib
+ */
 class HashInstrument
 {
 
     /**
      * Hashes all words with all algorithms
      * @param array $algorithms
-     * @param array $words
+     * @param array $wordsIds
      * @return array
      */
-    public static function hashAll(array $algorithms, array $words) : array
+    public static function hashAll(array $algorithms, array $wordsIds) : array
     {
         $hashFunctions = hash_algos();
         $newHashes = [];
+
+        $words = Vocabulary::whereIn('id', $wordsIds)->get()->keyBy('id');
         foreach ($algorithms as $algorithm) {
-            if (array_search($algorithm, $hashFunctions) === false) {
+            if (!in_array($algorithm, $hashFunctions, true)) {
                 continue;
             }
+            //Selecting ready hashes
+            $issetHashes = HashedWord::whereIn('word_id', $wordsIds)
+                ->where('algorithm', $algorithm)->ofCurrentUser()->get();
+            /**
+             * @var array $issetHashes
+             */
+            foreach ($issetHashes as $issetHash) {
+                $newHashes[$words[$issetHash->word_id]->word][$algorithm] = $issetHash;
+            }
+            //Creating new hashes
+            /**
+             * @var array $words
+             */
             foreach ($words as $word) {
-                //Checking if we have such word
-                $wordFromDb = Vocabulary::find($word);
-                if ($wordFromDb) {
-                    $newHashes[$wordFromDb->word][$algorithm] = static::hashOne($algorithm, $wordFromDb);
+                if (!isset($newHashes[$word->word][$algorithm])) {
+                    $newHashes[$word->word][$algorithm] = static::hashOne($algorithm, $word);
                 }
             }
         }
+
         return $newHashes;
     }
 
@@ -47,23 +66,15 @@ class HashInstrument
      */
     public static function hashOne(string $algorithm, Vocabulary $wordFromDb) : HashedWord
     {
-        //If we have such hashed word - we don't need to encrypt it again(I think)
-        $issetHash = HashedWord::where([
+        //Creating new hash
+        $hashedWord = hash($algorithm, $wordFromDb->word);
+        $newHash = new HashedWord([
             'word_id' => $wordFromDb->id,
+            'hash' => $hashedWord,
             'algorithm' => $algorithm,
-        ])->ofCurrentUser()->first();
-        if ($issetHash) {
-            $newHash = $issetHash;
-        } else {
-            //Creating new hash
-            $hashedWord = hash($algorithm, $wordFromDb->word);
-            $newHash = new HashedWord([
-                'word_id' => $wordFromDb->id,
-                'hash' => $hashedWord,
-                'algorithm' => $algorithm,
-            ]);
-            $newHash->save();
-        }
+        ]);
+        $newHash->save();
+
         return $newHash;
     }
 }
